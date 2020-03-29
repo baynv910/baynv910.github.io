@@ -134,6 +134,28 @@ nav {
 	transform: rotate(45deg) translate(-5px, -6px);	
 }
 
+.call-action {
+	font-size: 45px;
+	transition: all 0.5s ease;
+	padding: 5px 0px;
+	animation: callAction 0.5s infinite;
+}
+
+.call-action a {
+	color: white;
+}
+
+@keyframes callAction {
+	from {
+		padding-top: 0px;
+		padding-bottom: 10px;
+	}
+	to {
+		padding-top: 10px;
+		padding-bottom: 0px;
+	}
+}
+
 /*=============== main style ================*/
 section#home, section#about {
 }
