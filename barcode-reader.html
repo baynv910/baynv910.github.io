@@ -6,11 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #canvas {
+            border-radius: 10px;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .content #submit-btn {
+            padding: 7px 15px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            background: orangered;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-    <canvas id="canvas" width="500" height="500"></canvas>
-    <div id="barcodes"></div>
+    <div class="container">
+        <canvas id="canvas" width="360" height="200"></canvas>
+        
+        <div class="content">
+            <div id="barcodes"></div>
+            <button onclick="addToResults()">INSERT</button>
+        </div>
+        <h5>LIST RESULTS</h5>
+        <ol id="res-list" style="height: 300px; overflow-y: scroll;">
+           
+        </ol>
+    </div>
+
 
     <script>
         navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -22,6 +57,12 @@
                 step(capturer);
             });
         });
+
+        const addToResults = () => {
+            let barcodes = document.querySelector('#barcodes').innerText;
+            let resList = document.querySelector('#res-list');
+            resList.appendChild(`<li>${barcodes}</li>`)
+        }
 
         function step(capturer) {
             capturer.grabFrame().then((image) => {
@@ -45,7 +86,7 @@
                         'upc_e',
                     ],
                 });
-                
+
                 barcodeDetector.detect(image)
                     .then(barcodes => {
                         document.getElementById("barcodes").innerHTML = barcodes.map(barcode => barcode.rawValue).join(', ');
