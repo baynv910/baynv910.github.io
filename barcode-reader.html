@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Barcode Reader</title>
     <style>
         .container {
             position: absolute;
@@ -21,7 +21,7 @@
             text-align: center;
         }
 
-        .content #submit-btn {
+        .content button {
             padding: 7px 15px;
             border: 1px solid #ddd;
             border-radius: 15px;
@@ -60,8 +60,9 @@
 
         const addToResults = () => {
             let barcodes = document.querySelector('#barcodes').innerText;
-            let resList = document.querySelector('#res-list');
-            resList.appendChild(`<li>${barcodes}</li>`)
+            const node = document.createElement("li");
+            node.appendChild(document.createTextNode(barcodes));
+            let resList = document.querySelector('#res-list').appendChild(node);
         }
 
         function step(capturer) {
