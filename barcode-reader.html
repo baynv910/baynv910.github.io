@@ -13,6 +13,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
         #canvas {
             border-radius: 10px;
         }
@@ -29,21 +30,31 @@
             color: white;
             cursor: pointer;
         }
+
+        table,
+        tr,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" style="text-align: center">
         <canvas id="canvas" width="360" height="200"></canvas>
-        
+
         <div class="content">
-            <div id="barcodes"></div>
+            <div id="barcodes">1</div>
             <button onclick="addToResults()">INSERT</button>
         </div>
-        <h5>LIST RESULTS</h5>
-        <ol id="res-list" style="height: 300px; overflow-y: scroll;">
-           
-        </ol>
+        <h5 style="text-align: center">LIST RESULTS</h5>
+        <table id="res-list" style="margin: 0 auto;">
+
+        </table>
+        <button onclick="exportTableToExcel()">Export</button>
     </div>
 
 
@@ -60,7 +71,7 @@
 
         const addToResults = () => {
             let barcodes = document.querySelector('#barcodes').innerText;
-            const node = document.createElement("li");
+            const node = document.createElement("tr");
             node.appendChild(document.createTextNode(barcodes));
             let resList = document.querySelector('#res-list').appendChild(node);
         }
@@ -95,8 +106,39 @@
                     })
                     .catch((e) => {
                         console.error(e);
-                    });
+                    }); 000
             });
+        }
+        function exportTableToExcel() {
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById('res-list');
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+            // Specify file name
+            var filename = '';
+            filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+            // Create download link element
+            downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+                // Setting the file name
+                downloadLink.download = filename;
+
+                //triggering the function
+                downloadLink.click();
+            }
         }
     </script>
 </body>
