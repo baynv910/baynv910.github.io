@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Văn Bảy & Diễm Quỳnh - 5 Năm Bên Nhau</title>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/2530/2530802.png" type="image/x-icon">
+
+    <!-- Fonts Pro -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff6b81;
+            --primary-light: #ff8e9e;
+            --secondary: #a29bfe;
+            --text-main: #2d3436;
+            --text-light: #636e72;
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --bg-glass-strong: rgba(255, 255, 255, 0.9);
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+            --radius: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #fff5f7 100%);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Dynamic Background --- */
+        .bg-blobs {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: #fff0f3;
+            overflow: hidden;
+        }
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatBlob 20s infinite alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #ffc3d0; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #dfe4ea; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #ffeaa7; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation-delay: -10s; opacity: 0.4; }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(30px, 50px) rotate(20deg); }
+        }
+
+        /* --- Components --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: var(--shadow-lg);
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        /* --- Typography --- */
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--text-main); }
+        .font-script { font-family: 'Dancing Script', cursive; }
+        .text-gradient {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Music Button --- */
+        .music-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 56px;
+            height: 56px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(255, 107, 129, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid white;
+        }
+        .music-fab:active { transform: scale(0.9); }
+        .music-fab i { font-size: 20px; color: var(--primary); }
+        
+        .music-waves {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .playing .music-waves { animation: ripple 1.5s infinite; opacity: 1; }
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        .playing i { animation: spin 4s linear infinite; }
+
+        /* --- Header / Hero --- */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+
+        /* --- Counter --- */
+        .timer-wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px auto 0;
+            width: 100%;
+            max-width: 600px;
+            justify-items: center;
+            justify-content: center;
+        }
+        .timer-box {
+            background: rgba(255,255,255,0.8);
+            border-radius: 18px;
+            padding: 15px 10px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s;
+            min-width: 80px;
+        }
+        .timer-box:hover { transform: translateY(-5px); }
+        .timer-val {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1;
+        }
+        .timer-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        /* --- Couple Avatar --- */
+        .couple-avatars {
+            position: relative;
+            height: 180px;
+            width: 300px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .c-avatar {
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: var(--shadow-lg);
+            object-fit: cover;
+            position: absolute;
+            transition: transform 0.4s ease;
+        }
+        .c-avatar.boy { left: 20px; z-index: 1; transform: rotate(-5deg); }
+        .c-avatar.girl { right: 20px; z-index: 2; transform: rotate(5deg); }
+        
+        .love-icon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            background: white;
+            color: var(--primary);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        /* --- Timeline --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: #e9ecef;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            position: relative;
+            width: 50%;
+            padding: 0 40px;
+        }
+        
+        .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+        .timeline-item:nth-child(even) { left: 50%; text-align: left; }
+
+        .timeline-dot {
+            position: absolute;
+            top: 0;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--primary);
+            z-index: 2;
+        }
+        .timeline-item:nth-child(odd) .timeline-dot { right: -8px; }
+        .timeline-item:nth-child(even) .timeline-dot { left: -8px; }
+
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .timeline-content:active { transform: scale(0.98); }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* --- Gallery --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .gallery-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .gallery-img:hover { transform: scale(1.05); z-index: 10; }
+
+        /* --- Mobile Responsive --- */
+        @media screen and (max-width: 768px) {
+            .container { padding: 0 15px; }
+            .glass-card { padding: 20px; border-radius: 20px; margin: 20px 0; }
+            .timer-wrapper { gap: 10px; }
+            .timer-box { padding: 12px 5px; }
+            
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; left: 0 !important; padding-left: 50px; padding-right: 0; text-align: left !important; }
+            .timeline-item .timeline-dot { left: 12px !important; right: auto; }
+            
+            .couple-avatars { width: 260px; height: 160px; }
+            .c-avatar { width: 120px; height: 120px; }
+            
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-img { height: 160px; }
+            
+            .hero-title { font-size: 3rem; }
+        }
+
+        /* --- Scroll Indicator --- */
+        .scroll-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+        .mouse {
+            width: 26px; height: 40px;
+            border: 2px solid var(--text-light);
+            border-radius: 20px;
+            position: relative;
+        }
+        .wheel {
+            width: 4px; height: 4px;
+            background: var(--text-light);
+            border-radius: 50%;
+            position: absolute;
+            top: 6px; left: 50%;
+            transform: translateX(-50%);
+            animation: scrollWheel 1.5s infinite;
+        }
+        @keyframes scrollWheel {
+            0% { top: 6px; opacity: 1; }
+            100% { top: 18px; opacity: 0; }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 129, 0.7); }
+            70% { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 0 10px rgba(255, 107, 129, 0); }
+            100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 129, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic BG -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Music FAB -->
+    <div class="music-fab" id="musicBtn">
+        <div class="music-waves"></div>
+        <i class="fas fa-music"></i>
+        <!-- Dùng nhạc online để đảm bảo hoạt động ngay -->
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- HERO SECTION -->
+    <header class="container">
+        <div class="glass-card" style="margin-top: auto; margin-bottom: auto; max-width: 800px; width: 100%;">
+            <!-- Couple Avatar Block -->
+            <div class="couple-avatars" data-aos="zoom-in">
+                <!-- Ảnh từ repo GitHub: folder pic -->
+                <img src="./pic/mr.jpg" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'" class="c-avatar boy" alt="Bảy">
+                <img src="./pic/ms.jpg" onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'" class="c-avatar girl" alt="Quỳnh">
+                <div class="love-icon"><i class="fas fa-heart"></i></div>
+            </div>
+
+            <p class="font-script" style="font-size: 1.5rem; color: var(--text-light); margin-bottom: 5px;">Chuyện tình 5 năm của</p>
+            <h1 class="hero-title font-script text-gradient">Văn Bảy &<br>Diễm Quỳnh</h1>
+            
+            <div style="margin: 20px 0;">
+                <span style="background: rgba(255, 107, 129, 0.1); color: var(--primary); padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 0.9rem;">
+                    <i class="far fa-heart"></i> Bên nhau từ 14/02/2021
+                </span>
+            </div>
+
+            <!-- Counter -->
+            <div class="timer-wrapper">
+                <div class="timer-box">
+                    <span class="timer-val" id="days">0</span>
+                    <span class="timer-label">Ngày</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-val" id="hours">00</span>
+                    <span class="timer-label">Giờ</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-val" id="minutes">00</span>
+                    <span class="timer-label">Phút</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-val" id="seconds">00</span>
+                    <span class="timer-label">Giây</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <div class="mouse"><div class="wheel"></div></div>
+        </div>
+    </header>
+
+    <!-- LETTER SECTION (Thêm từ bản cũ) -->
+    <section class="container">
+        <div class="glass-card" data-aos="fade-up">
+            <div style="text-align: center; margin-bottom: 20px; color: var(--primary-light);">
+                <i class="fas fa-envelope-open-text" style="font-size: 3rem;"></i>
+            </div>
+            <h2 class="text-center font-script" style="font-size: 2.5rem; margin-bottom: 20px; color: var(--primary);">Gửi Diễm Quỳnh của anh</h2>
+            <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main); padding: 0 10px;">
+                <p style="margin-bottom: 15px;">Chào em, cô gái đã dành cả thanh xuân 5 năm qua để ở bên cạnh anh.</p>
+                <p style="margin-bottom: 15px;">Từ ngày <strong>14/02/2021</strong> đến nay, chúng mình đã cùng nhau đi qua biết bao nhiêu cung bậc cảm xúc. Có vui, có buồn, có những lúc giận hờn nhưng quan trọng nhất là tay vẫn nắm chặt tay.</p>
+                <p style="margin-bottom: 15px;">Cảm ơn em vì đã luôn thấu hiểu, bao dung và là điểm tựa bình yên nhất của anh. 5 năm không phải là quá dài so với một đời người, nhưng đủ để anh nhận ra rằng: <strong>Anh không thể thiếu em.</strong></p>
+                <p class="text-right font-script" style="font-weight: bold; color: var(--primary); margin-top: 30px; font-size: 1.8rem;">
+                    Mãi yêu em,<br>Văn Bảy.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIMELINE SECTION -->
+    <section class="container">
+    <h2 class="text-center font-script" style="font-size: 2.5rem; margin-bottom: 40px; color: var(--primary);" data-aos="fade-up">Hành Trình Của Chúng Mình</h2>
+        
+        <div class="timeline">
+            <!-- Item 1 -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Tháng 10 / 2020</span>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Lần đầu gặp gỡ</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-light); line-height: 1.6;">Gặp nhau tại lớp tập huấn HSV. Ấn tượng đầu tiên về nụ cười của em đã làm anh xao xuyến.</p>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">14 / 02 / 2021</span>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Lời tỏ tình</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-light); line-height: 1.6;">Ngày Valentine định mệnh. Anh lấy hết can đảm để nói lời yêu và thật hạnh phúc khi em gật đầu.</p>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Tháng 04 / 2021</span>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Chuyến đi đầu tiên</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-light); line-height: 1.6;">Vũng Tàu vẫy gọi! 100km đầu tiên cùng nhau trên chiếc xe máy, cùng ngắm biển và hoàng hôn.</p>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Hôm nay</span>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Vẫn đang viết tiếp...</h3>
+                    <p style="font-size: 0.95rem; color: var(--text-light); line-height: 1.6;">Tình yêu không phải là đích đến, mà là hành trình. Cảm ơn em đã luôn bên cạnh anh.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="container" style="padding-bottom: 80px;">
+        <div class="glass-card">
+            <h2 class="text-center font-script" style="font-size: 2.5rem; margin-bottom: 20px; color: var(--primary);">Album Kỷ Niệm</h2>
+            <p class="text-center" style="color: var(--text-light); margin-bottom: 30px;">Những khoảnh khắc đẹp nhất của hai đứa</p>
+            
+            <div class="gallery-grid">
+                <!-- Ảnh từ repo GitHub: folder pic/carousel -->
+                <img src="./pic/carousel/1.jpg" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=400&q=80'" class="gallery-img" data-aos="zoom-in" alt="Memory">
+                <img src="./pic/carousel/2.jpg" onerror="this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=400&q=80'" class="gallery-img" data-aos="zoom-in" data-aos-delay="100" alt="Memory">
+                <img src="./pic/carousel/3.jpg" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80'" class="gallery-img" data-aos="zoom-in" alt="Memory">
+                <img src="./pic/carousel/4.jpg" onerror="this.src='https://images.unsplash.com/photo-1621112904887-419379ce6824?auto=format&fit=crop&w=400&q=80'" class="gallery-img" data-aos="zoom-in" data-aos-delay="100" alt="Memory">
+                <img src="./pic/carousel/5.jpg" onerror="this.src='https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=400&q=80'" class="gallery-img" data-aos="zoom-in" alt="Memory">
+                <img src="./pic/carousel/6.jpg" onerror="this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=400&q=80'" class="gallery-img" data-aos="zoom-in" data-aos-delay="100" alt="Memory">
+            </div>
+            
+            <div class="text-center" style="margin-top: 30px;">
+                <a href="https://drive.google.com/drive/folders/1NtTlSwVhO096zZu8yKfDHKvTnlgHHlNy?usp=sharing" target="_blank" class="inline-block" style="text-decoration: none; color: white; background: var(--primary); padding: 12px 30px; border-radius: 50px; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4); display: inline-block; transition: transform 0.2s;">
+                    Xem tất cả ảnh <i class="fas fa-arrow-right" style="font-size: 0.8em; margin-left: 5px;"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 20px; color: var(--text-light); font-size: 0.9rem;">
+        Made with <i class="fas fa-heart" style="color: var(--primary);"></i> by Văn Bảy
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init Animation
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: false,
+            mirror: true
+        });
+
+        // Optimized Heart Effect
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤';
+            heart.style.position = 'fixed';
+            heart.style.top = '-20px';
+            heart.style.left = Math.random() * 90 + 5 + 'vw'; 
+            heart.style.fontSize = Math.random() * 15 + 10 + 'px';
+            heart.style.color = Math.random() > 0.5 ? '#ff6b81' : '#ff8e9e';
+            heart.style.opacity = Math.random() * 0.5 + 0.3;
+            heart.style.zIndex = '-1';
+            heart.style.animation = 'fall ' + (Math.random() * 3 + 4) + 's linear';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 7000);
+        }
+        setInterval(createHeart, 600); 
+
+        // Add Fall Animation Style
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }`;
+        document.head.appendChild(styleSheet);
+
+        // Counter Logic - Set Date: 14/02/2021
+        const startDate = new Date("2021-02-14T00:00:00").getTime();
+        function updateCounter() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // Music Player
+        const musicBtn = document.getElementById('musicBtn');
+        const audio = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.innerHTML = '<div class="music-waves"></div><i class="fas fa-music"></i>';
+            } else {
+                audio.play();
+                musicBtn.classList.add('playing');
+                musicBtn.innerHTML = '<div class="music-waves"></div><i class="fas fa-compact-disc"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>
